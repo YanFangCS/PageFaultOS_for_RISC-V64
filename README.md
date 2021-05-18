@@ -10,7 +10,7 @@ todo list:
 underconstruction:
 1.  linker filer
 2.  physical memory and virtual memory management
-3.  page swap algorithm implement
+3.  page swap algorithm implement -- LRU is under consideration
 
 done:
 1.  RISC-V sv39 page table implement
