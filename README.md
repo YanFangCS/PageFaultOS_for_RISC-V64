@@ -1,16 +1,18 @@
 # PageFaultOS_for_RISC-V64
-PAGE-FAULT
+PAGE-FAULT team works
 
-todo list:
-1.  trap 
-2.  process management
-3.  synchronize
-4.  file system
+## todo list:
+-[] trap 
+-[] process management
+-[]  synchronize
+-[]  file system
 
-underconstruction:
-1.  linker filer
-2.  physical memory and virtual memory management
-3.  page swap algorithm implement -- LRU is under consideration
+## underconstruction:
+-[]  linker filer
+-[]  physical memory and virtual memory management
+-[]  page swap algorithm implement -- LRU is under consideration
 
-done:
-1.  RISC-V sv39 page table implement
+## done:
+-[x]  RISC-V sv39 page table implement
+-[x]  buddy system 
+-[x]  memory management
