@@ -3,7 +3,6 @@
 PAGE-FAULT team works
 
 ## todo list:
-- [ ] trap 
 - [ ] process management
 - [ ] synchronize
 - [ ] file system -- especially FAT-32 file system
@@ -17,3 +16,4 @@ PAGE-FAULT team works
 - [x] RISC-V sv39 page table implement
 - [x] buddy system 
 - [x] memory management
+- [x] trap
