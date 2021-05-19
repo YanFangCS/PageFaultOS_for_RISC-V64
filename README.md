@@ -8,8 +8,8 @@ PAGE-FAULT team works
 - [ ] file system
 
 ## underconstruction:
-- [ ] linker filer
-- [ ] physical memory and virtual memory management
+- [x] linker filer
+- [x] physical memory and virtual memory management
 - [ ] page swap algorithm implement -- LRU is under consideration
 
 ## done:
