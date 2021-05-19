@@ -1,11 +1,12 @@
 # PageFaultOS_for_RISC-V64
+## PFCore
 PAGE-FAULT team works
 
 ## todo list:
 - [ ] trap 
 - [ ] process management
 - [ ] synchronize
-- [ ] file system
+- [ ] file system -- especially FAT-32 file system
 
 ## underconstruction:
 - [x] linker filer
