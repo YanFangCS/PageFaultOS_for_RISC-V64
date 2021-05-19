@@ -1,9 +1,27 @@
 #include <pmm.h>
+#include <error.h>
+#include <defs.h>
+#include <riscv.h>
+#include <kmalloc.h>
+#include <memlayout.h>
+#include <mmu.h>
+#include <pmm.h>
+#include <sbi.h>
+#include <stdio.h>
+#include <string.h>
+#include <sync.h>
+
+
+struct Page *page;
+size_t npage = 0;
+uint_t va_pa_offset;
+const size_t nbase = DRAM_BASE / PGSIZE;
+pde_t * boot_pgdir = NULL;
+uintptr_t boot_cr3;
 
 void TLB_invalid(pde_t * pgdir, uintptr_t la){
     asm volatile("sfence.vma %0" : : "r"(la));
 }
-
 
 struct Page* alloc_pages(size_t n){
     struct Page *page = NULL;
@@ -33,7 +51,6 @@ void free_pages(struct Page *base, size_t n){
     }
     local_intr_restore(intr_flag);
 }
-
 
 pte_t * getPte(pde_t * pgdir, uintptr_t la, bool create){
     pde_t _pde0 = &pgdir[VPN0(la)];
@@ -73,7 +90,6 @@ struct  Page * getPage(pde_t * pgdir, uintptr_t la, pte_t **ptep_restore){
     return NULL;
 }
 
-
 // 删除la对应的页表项
 static inline void page_remove_pte(pde_t * pgdir, uintptr_t la, pte_t * _pte){
     if(* _pte & PTE_V){
@@ -90,7 +106,6 @@ void pageRemove(pde_t * pgdir, uintptr_t la){
         page_remove_pte(pgdir, la, ptep);
     }
 }
-
 
 void free_pages(struct Page* page, size_t n){
     bool intr_flag;
@@ -111,7 +126,6 @@ size_t nr_free_pages(void){
     local_intr_restore(intr_flag);
     return ret;
 }
-
 
 int pageInsert(pde_t * pgdir, struct Page * page, uintptr_t la, uint32_t perm){
     pte_t * _pte = get_pte(pgdir, la, 1);
@@ -147,3 +161,11 @@ struct Page * pgdir_alloc_page(pde_t * pgdir, uintptr_t la, uint32_t perm){
     }
     return page;
 } 
+
+void load_esp0(uintptr_t esp0){
+
+}
+
+void unmap_range(pde_t * pgdir, uintptr_t start, uintptr_t end);
+void exit_range(pde_t * pgdir, uintptr_t start, uintptr_t end, bool share);
+int copy_range(pde_t * to, pde_t * from, uintptr_t start, uintptr_t end, bool share);
