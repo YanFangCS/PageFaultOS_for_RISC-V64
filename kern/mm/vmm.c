@@ -89,12 +89,11 @@ struct mm_struct *mm_create(void){
         mm->mmap_cache = NULL;
         mm->pgdir = NULL;
 
+        if (swap_init_ok) swap_init_mm(mm);
+        else mm->sm_priv = NULL;
         mm_count_set(mm, 0);
-        
+        sem_init(&(mm->mm_sem), 1);
 
-        // todo list:
-        // mm->sem init
-        // mm->sm_priv
     }
     return mm;
 }
@@ -322,20 +321,23 @@ bool user_mem_check(struct mm_struct *mm, uintptr_t addr, size_t len, bool write
 
 // 
 bool copy_from_user(struct mm_struct *mm, void *dst, const void *src, size_t len, bool writable){
-
+    if(!user_mem_check(mm, (uintptr_t)src, len, writable)) {
+        return 0;
+    }
+    memcpy(dst, src, len);
+    return 1;
 }
 
 
 // 
 bool copy_to_user(struct mm_struct *mm, void *dst, const void *src, size_t len){
-
+    if(!user_mem_check(mm, (uintptr_t)dst, len , 1)){
+        return 0;
+    }
+    memcpy(dst, src, len);
+    return 1;
 }
 
-
-// 
-bool copy_string(struct mm_struct *mm, char *dst, const char *src, size_t maxn){
-    
-}
 
 
 bool copy_string(struct mm_struct *mm, char *dst, const char *src, size_t maxn){

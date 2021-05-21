@@ -27,7 +27,7 @@
  *   reserved    PPN[2]   PPN[1]   PPN[0]   RSW   D   A   G   U   X   W   R   V
  */
 
-#define VPN0SHIFT        12
+#define VPN0SHIFT       12
 #define VPN1SHIFT       21
 #define VPN2SHIFT       30
 #define PTE_PPN_SHIFT   10
@@ -51,7 +51,7 @@
 #define PGSHIFT     12
 #define PTSHIFT     21
 #define PTSIZE      (PGSIZE * NPTEENTRY)
-#define PDSIZE      (PTSIZE * NPDEETEY)
+#define PDSIZE      (PTSIZE * NPDEENTRY)
 
 
 //page table entry fields

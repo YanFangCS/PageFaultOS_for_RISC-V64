@@ -22,7 +22,9 @@ void print_kerninfo(void) {
  * print_debuginfo - read and print the stat information for the address @eip,
  * and info.eip_fn_addr should be the first address of the related function.
  * */
-void print_debuginfo(uintptr_t eip) { panic("Not Implemented!"); }
+void print_debuginfo(uintptr_t eip) { 
+    // panic("Not Implemented!"); 
+}
 
 /* *
  * print_stackframe - print a list of the saved eip values from the nested
@@ -88,5 +90,5 @@ void print_stackframe(void) {
      *           NOTICE: the calling funciton's return addr eip  = ss:[ebp+4]
      *                   the calling funciton's ebp = ss:[ebp]
      */
-    panic("Not Implemented!");
+    // panic("Not Implemented!");
 }
