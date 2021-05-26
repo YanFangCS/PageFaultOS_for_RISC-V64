@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "vmm.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "spinlock.h": "c",
+        "memlayout.h": "c",
+        "string.h": "c",
+        "printf.h": "c"
     }
 }
