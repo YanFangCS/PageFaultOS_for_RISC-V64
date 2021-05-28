@@ -5,6 +5,8 @@
         "spinlock.h": "c",
         "memlayout.h": "c",
         "string.h": "c",
-        "printf.h": "c"
+        "printf.h": "c",
+        "proc.h": "c",
+        "fcntl.h": "c"
     }
 }

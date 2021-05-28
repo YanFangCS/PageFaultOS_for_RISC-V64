@@ -10,13 +10,13 @@
 //
 #include <stdarg.h>
 #include <types.h>
-#include "include/param.h"
-#include "include/spinlock.h"
-#include "include/sleeplock.h"
+#include <param.h>
+#include <spinlock.h>
+#include <sleeplock.h>
 #include <file.h>
 #include <memlayout.h>
 #include <riscv.h>
-#include "include/proc.h"
+#include <proc.h>
 #include <sbi.h>
 
 #define BACKSPACE 0x100
@@ -82,7 +82,7 @@ consoleread(int user_dst, uint64 dst, int n)
     // wait until interrupt handler has put some
     // input into cons.buffer.
     while(cons.r == cons.w){
-      if(myproc()->killed){
+      if(curproc()->killed){
         release(&cons.lock);
         return -1;
       }

@@ -2,6 +2,8 @@
 #include <param.h>
 #include <memlayout.h>
 #include <riscv.h>
+#include <proc.h>
+
 
 pagetable_t kern_pagetable;
 
@@ -62,7 +64,7 @@ void kvmInitHart(void){
 }
 
 pte_t *walk(pagetable_t pagetable, uint64 vaddr, int alloc){
-    if(va >= MAXVA){
+    if(vaddr >= MAXVA){
         panic("get pagetable entry");
     }
 
@@ -70,7 +72,7 @@ pte_t *walk(pagetable_t pagetable, uint64 vaddr, int alloc){
         pte_t *pte = &pagetable[PX(level, vaddr)];
 
         if(*pte & PTE_V){
-            pagetable = (pagetable) pte2page(*pte);
+            pagetable = (pagetable_t) PTE2PAGE(*pte);
         } else {
             if(!alloc || (pagetable = (pde_t *)kalloc()) == NULL){
                 return NULL;
@@ -87,7 +89,7 @@ uint64 walkaddr(pagetable_t pagetable, uint64 vaddr){
     pte_t * pte;
     uint64 paddr;
 
-    if(va >= MAXVA) return NULL;
+    if(vaddr >= MAXVA) return NULL;
 
     pte = walk(pagetable, vaddr, 0);
     
@@ -132,7 +134,7 @@ int MapPages(pagetable_t pagetable, uint64 vaddr, uint64 paddr, uint64 size, int
     for( ; ; ){
         if((pte = walk(pagetable, temp, 1)) == NULL) return -1;
         if(*pte && PTE_V) panic("ramap");
-        *pte= page2pte(pa) | perm | PTE_V;
+        *pte= page2pte(paddr) | perm | PTE_V;
         if(temp == last) break;
         temp  += PGSIZE;
         paddr += PGSIZE;
@@ -304,7 +306,7 @@ int CopyOut(pagetable_t pagetable, uint64 dstvaddr, char *src, uint64 len){
 }
 
 int CopyOut2(uint64 dstva, char *src, uint64 len){
-    uint64 size = myproc()->sz;
+    uint64 size = curproc()->sz;
     if(dstva + len > size || dstva >= size){
         return -1;
     }
@@ -332,7 +334,7 @@ int CopyIn(pagetable_t pagetable, char *dst, uint64 srcvaddr, uint64 len){
 
 
 int CopyIn2(char *dst, uint64 srcvaddr, uint64 len){
-    uint64 size = myproc()->sz;
+    uint64 size = curproc()->sz;
     if(srcvaddr + len > size || srcvaddr > size){
         return -1;
     }
@@ -378,7 +380,7 @@ int CopyinStr(pagetable_t pagetable, char *dst, uint64 srcvaddr, uint64 max){
 
 int CopyinStr2(char *dst, uint64 srcvaddr, uint64 max){
     int got_null = 0;
-    uint64 size = myproc()->sz;
+    uint64 size = curproc()->sz;
     while(srcvaddr < size && max > 0){
         char *p = (char *)srcvaddr;
         if(*p == '\0'){
@@ -443,7 +445,7 @@ void KvmfreeUser(pagetable_t kpagetable){
 void Kvmfree(pagetable_t kpagetable, int stack_free){
     if(stack_free){
         vmunmap(kpagetable, VKSTACK, 1, 1);
-        pte_t pte = kpagetable[PX(x, VKSTACK)];
+        pte_t pte = kpagetable[PX(2, VKSTACK)];
         if((pte & PTE_V) && (pte & (PTE_R | PTE_W | PTE_X)) == 0){
             Kfreewalk((pagetable_t) pte2page(pte));
         }
@@ -455,7 +457,7 @@ void Kvmfree(pagetable_t kpagetable, int stack_free){
 void vmprint(pagetable_t pagetable){
     const int capacity = 512;
     printf("page table %p\n", pagetable);
-    for(pte_t *pte = (pte *) pagetable; pte < pagetable + capacity; ++pte){
+    for(pte_t *pte = (pte_t *) pagetable; pte < pagetable + capacity; ++pte){
         if(*pte & PTE_V){
             pagetable_t pt2 = (pagetable_t) pte2page(*pte);
             printf("..%d: pte %p pa %p\n", pte - pagetable, *pte, pt2);

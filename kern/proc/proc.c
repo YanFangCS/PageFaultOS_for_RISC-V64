@@ -1,17 +1,17 @@
-#include "include/types.h"
-#include "include/param.h"
-#include "include/memlayout.h"
-#include "include/riscv.h"
-#include "include/spinlock.h"
-#include "include/proc.h"
-#include "include/intr.h"
-#include "include/kalloc.h"
-#include "include/printf.h"
-#include "include/string.h"
-#include "include/fat32.h"
-#include "include/file.h"
-#include "include/trap.h"
-#include "include/vm.h"
+#include "types.h"
+#include "param.h"
+#include "memlayout.h"
+#include "riscv.h"
+#include "spinlock.h"
+#include "proc.h"
+#include "intr.h"
+#include "kalloc.h"
+#include "printf.h"
+#include "string.h"
+#include "fat32.h"
+#include "file.h"
+#include "trap.h"
+#include "vm.h"
 
 
 struct cpu cpus[NCPU];
@@ -204,9 +204,7 @@ growproc(int n)
 }
 
 // 创建一个复制当前进程的新进程
-int
-fork(void)
-{
+int fork(void) {
   int i, pid;
   struct proc *np;
   struct proc *p = curproc();

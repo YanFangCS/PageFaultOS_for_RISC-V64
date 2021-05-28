@@ -242,8 +242,8 @@ static int check_block_size(void) {
 		if (0 == result) {
 			if (ocr[0] & 0x40) {
 				printf("SDHC/SDXC detected\n");
-				if (512 != BSIZE) {
-					printf("BSIZE != 512\n");
+				if (512 != BFSIZE) {
+					printf("BFSIZE != 512\n");
 					return 0xff;
 				}
 
@@ -252,11 +252,11 @@ static int check_block_size(void) {
 			else {
 				printf("SDSC detected, setting block size\n");
 
-				// setting SD card block size to BSIZE 
+				// setting SD card block size to BFSIZE 
 				int timeout = 0xff;
 				int result = 0xff;
 				while (--timeout) {
-					sd_send_cmd(SD_CMD16, BSIZE, 0);
+					sd_send_cmd(SD_CMD16, BFSIZE, 0);
 					result = sd_get_response_R1();
 					sd_end_cmd();
 
@@ -362,7 +362,7 @@ void sdcard_read_sector(uint8 *buf, int sectorno) {
 	if (0 == timeout) {
 		panic("sdcard: timeout waiting for reading");
 	}
-	sd_read_data_dma(buf, BSIZE);
+	sd_read_data_dma(buf, BFSIZE);
 	sd_read_data(dummy_crc, 2);
 
 	sd_end_cmd();
@@ -398,7 +398,7 @@ void sdcard_write_sector(uint8 *buf, int sectorno) {
 
 	// sending data to be written 
 	sd_write_data(&START_BLOCK_TOKEN, 1);
-	sd_write_data_dma(buf, BSIZE);
+	sd_write_data_dma(buf, BFSIZE);
 	sd_write_data(dummy_crc, 2);
 
 	// waiting for sdcard to finish programming 
@@ -445,21 +445,21 @@ void sdcard_write_sector(uint8 *buf, int sectorno) {
 
 // A simple test for sdcard read/write test 
 void test_sdcard(void) {
-	uint8 buf[BSIZE];
+	uint8 buf[BFSIZE];
 
 	for (int sec = 0; sec < 5; sec ++) {
-		for (int i = 0; i < BSIZE; i ++) {
+		for (int i = 0; i < BFSIZE; i ++) {
 			buf[i] = 0xaa;		// data to be written 
 		}
 
 		sdcard_write_sector(buf, sec);
 
-		for (int i = 0; i < BSIZE; i ++) {
+		for (int i = 0; i < BFSIZE; i ++) {
 			buf[i] = 0xff;		// fill in junk
 		}
 
 		sdcard_read_sector(buf, sec);
-		for (int i = 0; i < BSIZE; i ++) {
+		for (int i = 0; i < BFSIZE; i ++) {
 			if (0 == i % 16) {
 				printf("\n");
 			}

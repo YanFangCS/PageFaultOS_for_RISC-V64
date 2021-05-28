@@ -106,9 +106,9 @@ int fat32_init()
     printf("[FAT32 init]first_data_sec: %d\n", fat.first_data_sec);
     #endif
 
-    // make sure that byts_per_sec has the same value with BSIZE 
-    if (BSIZE != fat.bpb.byts_per_sec) 
-        panic("byts_per_sec != BSIZE");
+    // make sure that byts_per_sec has the same value with BFSIZE 
+    if (BFSIZE != fat.bpb.byts_per_sec) 
+        panic("byts_per_sec != BFSIZE");
     initlock(&ecache.lock, "ecache");
     memset(&root, 0, sizeof(root));
     initsleeplock(&root.lock, "entry");
@@ -204,7 +204,7 @@ static void zero_clus(uint32 cluster)
     struct buf *b;
     for (int i = 0; i < fat.bpb.sec_per_clus; i++) {
         b = bread(0, sec++);
-        memset(b->data, 0, BSIZE);
+        memset(b->data, 0, BFSIZE);
         bwrite(b);
         brelse(b);
     }
@@ -250,16 +250,16 @@ static uint rw_clus(uint32 cluster, int write, int user, uint64 data, uint off, 
     int bad = 0;
     for (tot = 0; tot < n; tot += m, off += m, data += m, sec++) {
         bp = bread(0, sec);
-        m = BSIZE - off % BSIZE;
+        m = BFSIZE - off % BFSIZE;
         if (n - tot < m) {
             m = n - tot;
         }
         if (write) {
-            if ((bad = either_copyin(bp->data + (off % BSIZE), user, data, m)) != -1) {
+            if ((bad = either_copyin(bp->data + (off % BFSIZE), user, data, m)) != -1) {
                 bwrite(bp);
             }
         } else {
-            bad = either_copyout(user, data, bp->data + (off % BSIZE), m);
+            bad = either_copyout(user, data, bp->data + (off % BFSIZE), m);
         }
         brelse(bp);
         if (bad == -1) {
@@ -892,7 +892,7 @@ static struct dirent *lookup_path(char *path, int parent, char *name)
     if (*path == '/') {
         entry = edup(&root);
     } else if (*path != '\0') {
-        entry = edup(myproc()->cwd);
+        entry = edup(curproc()->cwd);
     } else {
         return NULL;
     }

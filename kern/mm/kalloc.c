@@ -7,12 +7,11 @@
 
 void FreeRange(void *pa_start, void *pa_end);
 
-
 extern char kernel_end[];
 
 struct run{
     struct run *next;
-}
+};
 
 struct {
     struct spinlock lock;
@@ -52,7 +51,7 @@ void kfree(void *pa){
 }
 
 void * kalloc(void){
-    struct run;
+    struct run * r;
 
     acquire(&kmem.lock);
     r = kmem.freelist;

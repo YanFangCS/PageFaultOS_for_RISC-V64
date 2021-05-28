@@ -1,8 +1,8 @@
 #ifndef __FAT32_H
 #define __FAT32_H
 
-#include "sleeplock.h"
-#include "stat.h"
+#include <sleeplock.h>
+#include <stat.h>
 
 #define ATTR_READ_ONLY      0x01
 #define ATTR_HIDDEN         0x02

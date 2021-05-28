@@ -6,7 +6,7 @@
 
 struct cpu;
 
-struct spinlock{    
+struct spinlock {    
     uint32  locked;
     char *name;
     struct cpu * cpu;

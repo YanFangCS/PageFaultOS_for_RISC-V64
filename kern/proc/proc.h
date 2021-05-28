@@ -1,13 +1,13 @@
 #ifndef __KERN_PROC_PROC_H__
 #define __KERN_PROC_PROC_H__
 
-#include "param.h"
-#include "riscv.h"
-#include "types.h"
-#include "spinlock.h"
-#include "file.h"
-#include "fat32.h"
-#include "trap.h"
+#include <param.h>
+#include <riscv.h>
+#include <types.h>
+#include <spinlock.h>
+#include <file.h>
+#include <fat32.h>
+#include <trap.h>
 
 // Saved registers for kernel context switches.
 struct context {
