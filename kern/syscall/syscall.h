@@ -1,8 +1,8 @@
 #ifndef __KERN_SYSCALL_SYSCALL_H__
 #define __KERN_SYSCALL_SYSCALL_H__
 
-#include <types.h>
-#include <sysnum.h>
+#include "libs/types.h"
+#include "syscall/sysnum.h"
 
 void syscall(void);
 int fetchaddr(uint64 addr, uint64 *ip);

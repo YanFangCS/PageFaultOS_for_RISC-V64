@@ -6,7 +6,8 @@
 #ifndef _ASM_RISCV_SBI_H
 #define _ASM_RISCV_SBI_H
 
-
+typedef unsigned long uint64;
+typedef unsigned long uintptr_t;
 
 #define SBI_SET_TIMER 0
 #define SBI_CONSOLE_PUTCHAR 1

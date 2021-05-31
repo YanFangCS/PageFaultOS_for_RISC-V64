@@ -1,7 +1,7 @@
 #ifndef __KERN_LIBS_ELF_H__
 #define __KERN_LIBS_ELF_H__
 
-#include <types.h>
+#include "libs/types.h"
 
 #define ELF_MAGIC   0x464C457FU
 
@@ -19,7 +19,7 @@ struct elfhdr {
     ushort phentsize;
     ushort phnum;
     ushort shstrndx;
-};
+} ;
 
 struct prohdr {
     uint32 type;
@@ -30,7 +30,7 @@ struct prohdr {
     uint64 filesz;
     uint64 memsz;
     uint64 align;
-};
+} ;
 
 #define ELF_PROG_LOAD           1
 #define ELF_PROG_FLAG_EXEC      1

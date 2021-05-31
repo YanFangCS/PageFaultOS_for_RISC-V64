@@ -2,7 +2,7 @@
 #define __KERN_DRIVER_DISK_H__
 
 
-#include <buf.h>
+#include "fs/buf.hpp"
 
 void disk_init(void);
 void disk_read(struct buf *b);

@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include <types.h>
-#include <sysctl.h>
-#include <memlayout.h>
+#include "libs/types.h"
+#include "driver/sysctl.h"
+#include "mm/memlayout.h"
 
 #define SYSCTRL_CLOCK_FREQ_IN0 (26000000UL)
 

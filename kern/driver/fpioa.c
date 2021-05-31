@@ -1,10 +1,10 @@
 // FPIOA Implementation
 
-#include "types.h"
+#include "libs/types.h"
 #include "fpioa.h"
-#include "riscv.h"
+#include "libs/riscv.h"
 #include "sysctl.h"
-#include "memlayout.h"
+#include "mm/memlayout.h"
 
 /* Copyright 2018 Canaan Inc.
  *

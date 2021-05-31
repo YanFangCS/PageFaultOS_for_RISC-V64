@@ -1,5 +1,5 @@
-#include <types.h>
-#include <string.h>
+#include "libs/types.h"
+#include "libs/string.h"
 
 void* memset(void *dst, int c, uint n){
     char *cdst = (char *) dst;
@@ -13,8 +13,8 @@ void* memset(void *dst, int c, uint n){
 int memcmp(const void *v1, const void *v2, uint n){
     const uchar *s1, *s2;
 
-    s1 = v1;
-    s2 = v2;
+    s1 = (uchar *)v1;
+    s2 = (uchar *)v2;
     while(n-- > 0){
         if(*s1 != *s2)  return *s1 - *s2;
         s1++, s2++;
@@ -26,8 +26,8 @@ void* memmove(void *dst, const void *src, uint n){
     const char *s;
     char *d;
 
-    s = src;
-    d = dst;
+    s = (char *)src;
+    d = (char *)dst;
     if(s < d && s + n > d){
         s += n;
         d += n;
@@ -61,6 +61,30 @@ char* strncpy(char *s, const char *t, int n){
     return os;
 }
 
+static inline char toLowCase(char c)
+{
+  if (c >= 'A' && c <= 'Z')
+  {
+    return c + 32;
+  }
+  return c;
+}
+
+int strncasecmp(const char *s1, const char *s2, size_t n)
+{
+  const unsigned char *p1 = (const unsigned char *)s1;
+  const unsigned char *p2 = (const unsigned char *)s2;
+  int result;
+
+  if (p1 == p2 || n == 0)
+    return 0;
+
+  while ((result = toLowCase(*p1) - toLowCase(*p2++)) == 0)
+    if (*p1++ == '\0' || --n == 0)
+      break;
+  return result;
+}
+
 // Like strncpy but guaranteed to NUL-terminate.
 char* safestrcpy(char *s, const char *t, int n){
     char *os;
@@ -77,6 +101,14 @@ int strlen(const char *s){
 
     for(n = 0; s[n]; n++);
     return n;
+}
+
+
+char *strrchr(const char *s, char c) {
+  char *ans = 0;
+  for (; *s; s++)
+    if (*s == c) ans = (char *)s;
+  return ans;
 }
 
 // convert uchar string into wide char string 

@@ -1,6 +1,8 @@
 #ifndef __KERN_LIBS_RISCV_H__
 #define __KERN_LIBS_RISCV_H__
 
+#include "libs/types.h"
+
 // which hart (core) is this?
 static inline uint64
 r_mhartid()
@@ -47,7 +49,7 @@ w_mepc(uint64 x)
 #define SSTATUS_SPIE (1L << 5) // Supervisor Previous Interrupt Enable
 #define SSTATUS_UPIE (1L << 4) // User Previous Interrupt Enable
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
-#define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
+#define SSTATUS_UIE (1L)  // User Interrupt Enable
 
 static inline uint64
 r_sstatus()
@@ -340,7 +342,7 @@ sfence_vma()
 #define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
-#define PTE_V (1L << 0) // valid
+#define PTE_V (1L) // valid
 #define PTE_R (1L << 1)
 #define PTE_W (1L << 2)
 #define PTE_X (1L << 3)

@@ -1,7 +1,7 @@
 #ifndef __KERN_SYSCALL_SYSINFO_H__
 #define __KERN_SYSCALL_SYSINFO_H__
 
-#include <types.h>
+#include "libs/types.h"
 
 struct sysinfo {
     uint64 freemem;

@@ -1,8 +1,8 @@
 #ifndef __KERN_SYNC_SLEEPLOCK_H__
 #define __KERN_SYNC_SLEEPLOCK_H__
 
-#include <types.h>
-#include <spinlock.h>
+#include "libs/types.h"
+#include "sync/spinlock.h"
 
 struct spinlock;
 
@@ -17,6 +17,6 @@ struct sleeplock{
 void acquiresleep(struct sleeplock* slk);
 void releasesleep(struct sleeplock* slk);
 int  holdingsleep(struct sleeplock* slk);
-void initsleeplock(struct sleeplock* slk, char *name);
+void initsleeplock(struct sleeplock* slk, const char *name);
 
 #endif

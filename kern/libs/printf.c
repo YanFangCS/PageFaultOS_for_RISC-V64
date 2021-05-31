@@ -1,10 +1,11 @@
-#include <printf.h>
+
+#include "libs/printf.h"
 #include <stdarg.h>
-#include <types.h>
-#include <riscv.h>
-#include <spinlock.h>
-#include <console.h>
-#include <param.h>
+#include "libs/types.h"
+#include "libs/riscv.h"
+#include "sync/spinlock.h"
+#include "console/console.h"
+#include "libs/param.h"
 
 
 volatile int panicked = 0;
@@ -51,7 +52,7 @@ static void printptr(uint64 x){
         consputc(digits[x >> (sizeof(uint64) * 8 - 4)]);
 }
 
-void printf(char *fmt, ...) {
+void printf(char const*fmt, ...) {
     va_list ap;
     int i, c;
     int locking;
@@ -103,29 +104,29 @@ void printf(char *fmt, ...) {
         release(&pr.lock);
 }
 
-void panic(char *s){
+void panic(char const*s){
     printf("panic: ");
     printf(s);
     printf("\n");
     backtrace();
     panicked = 1;
-    for( ; ; ) ;
+    for( ; ; ) 
+        ;
 }
 
 void backtrace(void){
-    uint64 *fp = (uint64 *)r_fp();
-    uint64 *bottom = (uint64 *)PGROUNDDOWN((uint64)fp);
+    uint64 s0 = r_fp();
+    uint64 top = PGROUNDUP(s0);
+    uint64 bottom = PGROUNDDOWN(s0);
+    uint64 fp = s0;
     printf("backtrace:\n");
-    while(fp < bottom) {
-        uint64 ra = *(fp - 1);
-        printf("%p\n", pa - 4);
-        fp = (uint64 *)*(fp - 2);
+    while(fp != top && fp != bottom) {
+        printf("%p\n", *(uint64 *)(fp - 8));
+        fp = *(uint64 *)(fp - 16);
     }
 }
 
 void printfInit(void){
-    initlock(&pr.lock, "pr");
+    initlock(&pr.lock, (char *)"pr");
     pr.locking = 1;
 }
-
-

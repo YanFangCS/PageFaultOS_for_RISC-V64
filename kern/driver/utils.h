@@ -69,7 +69,7 @@ extern "C" {
  * @param[in]   src         8 bit data byte to write to memory
  */
 #define kendryte_write_byte(dest, src) \
-    (*KENDRYTE_CAST(volatile uint8_t *, (dest)) = (src))
+    (*KENDRYTE_CAST(volatile uint8 *, (dest)) = (src))
 
 /**
  * @brief       Read and return the 8 bit byte from the source address in device memory.
@@ -78,7 +78,7 @@ extern "C" {
  *
  * @return      8 bit data byte value
  */
-#define kendryte_read_byte(src) (*KENDRYTE_CAST(volatile uint8_t *, (src)))
+#define kendryte_read_byte(src) (*KENDRYTE_CAST(volatile uint8 *, (src)))
 
 /**
  * @brief       Write the 16 bit half word to the destination address in device memory.
@@ -87,7 +87,7 @@ extern "C" {
  * @param[in]   src         16 bit data half word to write to memory
  */
 #define kendryte_write_hword(dest, src) \
-    (*KENDRYTE_CAST(volatile uint16_t *, (dest)) = (src))
+    (*KENDRYTE_CAST(volatile uint16 *, (dest)) = (src))
 
 /**
  * @brief       Read and return the 16 bit half word from the source address in device
@@ -96,7 +96,7 @@ extern "C" {
  *
  * @return      16 bit data half word value
  */
-#define kendryte_read_hword(src) (*KENDRYTE_CAST(volatile uint16_t *, (src)))
+#define kendryte_read_hword(src) (*KENDRYTE_CAST(volatile uint16 *, (src)))
 
 /**
  * @brief       Write the 32 bit word to the destination address in device memory.
@@ -123,7 +123,7 @@ extern "C" {
  * @param[in]   src         64 bit data word to write to memory
  */
 #define kendryte_write_dword(dest, src) \
-    (*KENDRYTE_CAST(volatile uint64_t *, (dest)) = (src))
+    (*KENDRYTE_CAST(volatile uint64 *, (dest)) = (src))
 
 /**
  * @brief       Read and return the 64 bit double word from the source address in device
@@ -132,7 +132,7 @@ extern "C" {
  *
  * @return      64 bit data half word value
  */
-#define kendryte_read_dword(src) (*KENDRYTE_CAST(volatile uint64_t *, (src)))
+#define kendryte_read_dword(src) (*KENDRYTE_CAST(volatile uint64 *, (src)))
 
 /**
  * @brief       Set selected bits in the 8 bit byte at the destination address in device

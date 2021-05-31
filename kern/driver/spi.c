@@ -1,6 +1,15 @@
 // SPI Protocol Implementation
-
-
+#ifdef K210
+#include "libs/types.h"
+#include "libs/riscv.h"
+#include "driver/utils.h"
+#include "driver/dmac.h"
+#include "driver/spi.h"
+#include "driver/sysctl.h"
+#include "mm/kalloc.h"
+#include "mm/memlayout.h"
+#include "libs/string.h"
+#include "mm/memlayout.h"
 
 volatile spi_t *const spi[4] =
     {
@@ -191,7 +200,7 @@ void spi_send_data_standard(spi_device_num_t spi_num, spi_chip_select_t chip_sel
 {
     // configASSERT(spi_num < SPI_DEVICE_MAX && spi_num != 2);
     // uint8 *v_buf = malloc(cmd_len + tx_len);
-    uint8 *v_buf = kalloc();
+    uint8 *v_buf = (uint8 *)kalloc();
     uint64 i;
     for(i = 0; i < cmd_len; i++)
         v_buf[i] = cmd_buff[i];
@@ -368,7 +377,7 @@ void spi_send_data_normal_dma(dmac_channel_number_t channel_num, spi_device_num_
     {
         case SPI_TRANS_SHORT:
             // buf = malloc((tx_len) * sizeof(uint32));
-            buf = kalloc();
+            buf = (uint32 *)kalloc();
             for(i = 0; i < tx_len; i++)
                 buf[i] = ((uint16 *)tx_buff)[i];
             break;
@@ -377,7 +386,7 @@ void spi_send_data_normal_dma(dmac_channel_number_t channel_num, spi_device_num_
             break;
         case SPI_TRANS_CHAR:
         default:
-            buf = kalloc();
+            buf = (uint32 *)kalloc();
             for(i = 0; i < tx_len; i++)
                 buf[i] = ((uint8 *)tx_buff)[i];
             break;
@@ -434,7 +443,7 @@ void spi_receive_data_standard_dma(dmac_channel_number_t dma_send_channel_num,
     switch(frame_width)
     {
         case SPI_TRANS_INT:
-            write_cmd = kalloc();
+            write_cmd = (uint32 *)kalloc();
             for(i = 0; i < cmd_len / 4; i++)
                 write_cmd[i] = ((uint32 *)cmd_buff)[i];
             read_buf = &write_cmd[i];
@@ -442,7 +451,7 @@ void spi_receive_data_standard_dma(dmac_channel_number_t dma_send_channel_num,
             v_cmd_len = cmd_len / 4;
             break;
         case SPI_TRANS_SHORT:
-            write_cmd = kalloc();
+            write_cmd = (uint32 *)kalloc();
             for(i = 0; i < cmd_len / 2; i++)
                 write_cmd[i] = ((uint16 *)cmd_buff)[i];
             read_buf = &write_cmd[i];
@@ -450,7 +459,7 @@ void spi_receive_data_standard_dma(dmac_channel_number_t dma_send_channel_num,
             v_cmd_len = cmd_len / 2;
             break;
         default:
-            write_cmd = kalloc();
+            write_cmd = (uint32 *)kalloc();
             for(i = 0; i < cmd_len; i++)
                 write_cmd[i] = cmd_buff[i];
             read_buf = &write_cmd[i];
@@ -477,7 +486,7 @@ void spi_receive_data_standard_dma(dmac_channel_number_t dma_send_channel_num,
             break;
     }
 
-    kfree(write_cmd);
+    kfree((void *)write_cmd);
 }
 
 void spi_send_data_standard_dma(dmac_channel_number_t channel_num, spi_device_num_t spi_num,
@@ -512,7 +521,7 @@ void spi_send_data_standard_dma(dmac_channel_number_t channel_num, spi_device_nu
     switch(frame_width)
     {
         case SPI_TRANS_INT:
-            buf = kalloc();
+            buf = (uint32 *)kalloc();
             for(i = 0; i < cmd_len / 4; i++)
                 buf[i] = ((uint32 *)cmd_buff)[i];
             for(i = 0; i < tx_len / 4; i++)
@@ -541,3 +550,4 @@ void spi_send_data_standard_dma(dmac_channel_number_t channel_num, spi_device_nu
 
     kfree((void *)buf);
 }
+#endif

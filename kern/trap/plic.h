@@ -1,7 +1,7 @@
 #ifndef __KERN_TRAP_PLIC_H__
 #define __KERN_TRAP_PLIC_H__
 
-#include <memlayout.h>
+#include "mm/memlayout.h"
 
 
 #ifdef QEMU

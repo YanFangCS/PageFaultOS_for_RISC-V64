@@ -1,11 +1,12 @@
 #ifndef __KERN_LIBS_STAT_H__
 #define __KERN_LIBS_STAT_H__
 
-#include <types.h>
+#include "libs/types.h"
+#include "fs/fcntl.h"
 
-#define T_DIR       1
-#define T_FILE      2
-#define T_DEVICE    3
+// #define T_DIR       1
+// #define T_FILE      2
+// #define T_DEVICE    3
 
 #define STAT_MAX_NAME 32
 

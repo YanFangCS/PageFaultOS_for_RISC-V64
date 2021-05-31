@@ -3,9 +3,9 @@
 
 void printfinit(void);
 
-void printf(char *fmt, ...);
+void printf(char const*fmt, ...);
 
-void panic(char *s) __attribute__((noreturn));
+void panic(char const*s) __attribute__((noreturn));
 
 void backtrace();
 

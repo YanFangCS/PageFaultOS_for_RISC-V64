@@ -1,7 +1,7 @@
 #ifndef __KERN_TRAP_TRAP_H__
 #define __KERN_TRAP_TRAP_H__
 
-#include <types.h>
+#include "libs/types.h"
 
 struct trapframe{
     /*   0 */ uint64 kernel_satp;   // kernel page table
@@ -45,6 +45,5 @@ struct trapframe{
 void TrapInitHart(void);
 void UserTrapRet(void);
 void trapframeDump(struct trapframe *tf);
-
-
+int  DevIntr(void);
 #endif

@@ -2,7 +2,7 @@
 #define __KERN_SYNC_SPINLOCK_H__
 
 
-#include <types.h>
+#include "libs/types.h"
 
 struct cpu;
 
@@ -12,7 +12,7 @@ struct spinlock {
     struct cpu * cpu;
 };
 
-void initlock(struct spinlock*, char *);
+void initlock(struct spinlock*,const char *);
 
 void acquire(struct spinlock *);
 

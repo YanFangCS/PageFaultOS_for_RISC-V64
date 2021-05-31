@@ -16,7 +16,7 @@
 #define __KERN_DRIVER_DMAC_H__
 
 // #include "platform.h"
-#include "plic.h"
+#include "trap/plic.h"
 
 #ifdef __cplusplus
 extern "C" {

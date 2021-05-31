@@ -1,7 +1,7 @@
 #ifndef __KERN_MM_ALLOC_H__
 #define __KERN_MM_ALLOC_H__
 
-#include <types.h>
+#include "libs/types.h"
 
 void * kalloc(void);
 void   kfree(void *);
